@@ -90,7 +90,10 @@ galleryListEl.insertAdjacentHTML("beforeend", createMarkup(images));
 
 function handleClick(event) {
   event.preventDefault();
-  if (event.target.nodeName !== "IMG") {
+  // if (event.target.nodeName !== "IMG") {
+  //   return;
+  // }
+  if (!event.target.classList.contains("gallery-image")) {
     return;
   }
 
