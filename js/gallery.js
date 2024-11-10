@@ -65,25 +65,55 @@ const images = [
 ];
 
 const galleryListEl = document.querySelector(".gallery");
-galleryListEl.insertAdjacentHTML("beforeend", createMarkup(images));
 galleryListEl.addEventListener("click", handleClick);
 
 function createMarkup(arr) {
-  return arr.map(item => `
+  return arr
+    .map(
+      ({ preview, original, description }) => `
     <li class="gallery-item">
-      <a class="gallery-link" href="${item.original}">
+      <a class="gallery-link" href="${original}">
         <img 
           class="gallery-image"
-          src="${item.preview}" 
-          data-source="${item.original}"
-          alt="${item.description}"
+          src="${preview}" 
+          data-source="${original}"
+          alt="${description}"
         />
       </a>
     </li>
-    `).join("")
+    `
+    )
+    .join("");
 }
+
+galleryListEl.insertAdjacentHTML("beforeend", createMarkup(images));
 
 function handleClick(event) {
   event.preventDefault();
-}
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
 
+  const instance = basicLightbox.create(
+    `
+    <div class="modal">
+      <img 
+      src="${event.target.dataset.source}"
+      alt="${event.target.alt}"
+      />
+    </div>
+    `,
+    {
+      closable: true,
+    }
+  );
+
+  instance.show();
+
+  const modalImage = instance.element().querySelector("img");
+  modalImage.addEventListener("click", handleCloseModal);
+
+  function handleCloseModal() {
+    instance.close();
+  }
+}
