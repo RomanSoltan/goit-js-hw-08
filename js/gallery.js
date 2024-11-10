@@ -102,10 +102,7 @@ function handleClick(event) {
       alt="${event.target.alt}"
       />
     </div>
-    `,
-    {
-      closable: true,
-    }
+    `
   );
 
   instance.show();
